@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>DurSigns — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14181F;
+    --ink-soft:#1E2430;
+    --paper:#F2EFE6;
+    --paper-dim:#E7E2D3;
+    --yellow:#FFC93C;
+    --orange:#FF5A1F;
+    --steel:#8B93A1;
+    --white:#FFFFFF;
+    --line: rgba(242,239,230,0.16);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+  }
+  h1,h2,.display{
+    font-family:'Oswald', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    font-weight:700;
+  }
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase;}
+  a{color:inherit;}
+  :focus-visible{outline:3px solid var(--orange); outline-offset:3px;}
+
+  /* ---------- GATE ---------- */
+  .gate{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .gate-card{
+    width:100%;
+    max-width:380px;
+    border:1px solid var(--line);
+    padding:44px 36px;
+    background:var(--ink-soft);
+  }
+  .gate-tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--yellow);
+    letter-spacing:0.1em;
+    display:block;
+    margin-bottom:14px;
+  }
+  .gate-card h1{font-size:26px; margin-bottom:8px;}
+  .gate-card p{color:var(--steel); font-size:13.5px; margin-bottom:28px;}
+  label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    display:block;
+    margin-bottom:8px;
+  }
+  input[type="password"]{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:2px solid var(--line);
+    padding:10px 2px;
+    color:var(--paper);
+    font-size:15px;
+    margin-bottom:8px;
+  }
+  input[type="password"]:focus{border-bottom-color:var(--yellow);}
+  .gate-error{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--orange);
+    min-height:18px;
+    margin-bottom:14px;
+  }
+  .gate-btn{
+    width:100%;
+    background:var(--yellow);
+    color:var(--ink);
+    border:none;
+    padding:14px 20px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    font-weight:600;
+    cursor:pointer;
+    transition:background .2s ease;
+  }
+  .gate-btn:hover{background:var(--orange); color:var(--white);}
+  .gate-note{
+    margin-top:20px;
+    font-size:11.5px;
+    color:var(--steel);
+    line-height:1.6;
+  }
+
+  /* ---------- DASHBOARD ---------- */
+  .dash{display:none;}
+  .dash.visible{display:block;}
+  .dash-nav{
+    border-bottom:1px solid var(--line);
+    padding:0 32px;
+  }
+  .dash-nav-row{
+    max-width:1080px;
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height:72px;
+  }
+  .dash-logo{display:flex; align-items:center; gap:10px;}
+  .dash-logo svg{width:24px; height:24px;}
+  .dash-logo span{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:17px;
+    text-transform:uppercase;
+  }
+  .dash-logo span em{font-style:normal; color:var(--yellow);}
+  .dash-nav-right{display:flex; align-items:center; gap:20px;}
+  .dash-nav-right a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--steel);
+  }
+  .dash-nav-right a:hover{color:var(--yellow);}
+  .logout-btn{
+    background:none;
+    border:1px solid var(--line);
+    color:var(--paper);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    padding:9px 16px;
+    cursor:pointer;
+  }
+  .logout-btn:hover{border-color:var(--orange); color:var(--orange);}
+
+  .dash-body{
+    max-width:1080px;
+    margin:0 auto;
+    padding:56px 32px 100px;
+  }
+  .dash-eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--orange);
+    letter-spacing:0.1em;
+    display:block;
+    margin-bottom:14px;
+  }
+  .dash-body h2{font-size:clamp(28px, 4vw, 40px); margin-bottom:10px;}
+  .dash-intro{color:var(--steel); font-size:14.5px; max-width:560px; margin-bottom:56px;}
+
+  .panel{
+    border:1px solid var(--line);
+    padding:32px;
+    margin-bottom:32px;
+  }
+  .panel-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:24px;
+  }
+  .panel-head h3{font-size:19px;}
+  .panel-code{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    background:var(--ink);
+    color:var(--yellow);
+    padding:4px 9px;
+    border:1px solid var(--line);
+  }
+
+  table{width:100%; border-collapse:collapse;}
+  th, td{
+    text-align:left;
+    padding:12px 10px;
+    font-size:13.5px;
+    border-bottom:1px solid var(--line);
+  }
+  th{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--steel);
+    font-weight:500;
+  }
+  td.featured-row{color:var(--yellow);}
+
+  .swatch-grid{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:16px;
+  }
+  .swatch{border:1px solid var(--line);}
+  .swatch-color{height:70px;}
+  .swatch-label{
+    padding:10px 12px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+  }
+  .swatch-label .name{display:block; color:var(--paper); margin-bottom:2px; text-transform:uppercase; letter-spacing:0.05em;}
+  .swatch-label .hex{color:var(--steel);}
+
+  .font-list{display:flex; flex-direction:column; gap:18px;}
+  .font-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:1px solid var(--line);
+    padding-bottom:16px;
+  }
+  .font-item:last-child{border-bottom:none; padding-bottom:0;}
+  .font-sample{font-size:24px;}
+  .font-name{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--steel);
+    text-transform:uppercase;
+  }
+
+  .note-list{display:flex; flex-direction:column; gap:14px;}
+  .note-item{font-size:14px; color:var(--steel); display:flex; gap:12px;}
+  .note-item::before{content:"—"; color:var(--orange); flex-shrink:0;}
+  .note-item strong{color:var(--paper); font-weight:600;}
+
+  @media (max-width:720px){
+    .swatch-grid{grid-template-columns:repeat(2, 1fr);}
+    table{display:block; overflow-x:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <span class="gate-tag mono">Restricted Access</span>
+    <h1>Admin</h1>
+    <p>This area is for the DurSigns team only.</p>
+    <form id="gateForm">
+      <label for="pw">Passcode</label>
+      <input type="password" id="pw" autocomplete="off" placeholder="••••••••">
+      <p class="gate-error" id="gateError"></p>
+      <button type="submit" class="gate-btn">Enter</button>
+    </form>
+    <p class="gate-note">This is a soft gate for a static site, not real security — anyone who reads the page source can see how it works. Don't put sensitive data behind it. For real protection, this page needs proper server-side login.</p>
+  </div>
+</div>
+
+<div class="dash" id="dash">
+  <div class="dash-nav">
+    <div class="dash-nav-row">
+      <a href="dursigns.html" class="dash-logo">
+        <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="6" width="26" height="15" stroke="#FFC93C" stroke-width="2.4"/>
+          <line x1="15" y1="21" x2="15" y2="28" stroke="#FFC93C" stroke-width="2.4"/>
+          <line x1="6" y1="11.5" x2="24" y2="11.5" stroke="#FFC93C" stroke-width="2"/>
+          <line x1="6" y1="16" x2="18" y2="16" stroke="#FFC93C" stroke-width="2"/>
+        </svg>
+        <span>Dur<em>Signs</em> · Admin</span>
+      </a>
+      <div class="dash-nav-right">
+        <a href="pos.html">POS</a>
+        <a href="dursigns.html">View Site</a>
+        <button class="logout-btn" id="logoutBtn">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <span class="dash-eyebrow mono">Internal Reference</span>
+    <h2>Studio dashboard.</h2>
+    <p class="dash-intro">A quick-reference for pricing, brand assets, and how inquiries actually reach you. Nothing here is visible on the public site.</p>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Pricing Reference</h3>
+        <span class="panel-code">7 plans</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Code</th><th>Plan</th><th>Price (NZD)</th><th>Turnaround</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>P0</td><td>Free Trial Call</td><td>$0</td><td>1–2 hrs</td></tr>
+          <tr><td>P1</td><td>Mark Only</td><td>From $150</td><td>~1 week</td></tr>
+          <tr><td>P2</td><td>Starter Sign</td><td>From $450</td><td>~2 weeks</td></tr>
+          <tr><td>P3</td><td>Website Basics</td><td>From $1,200</td><td>~3 weeks</td></tr>
+          <tr><td>P4</td><td>Brand Identity</td><td>From $2,800</td><td>~4 weeks</td></tr>
+          <tr><td>P5</td><td class="featured-row">Full System ★</td><td class="featured-row">From $6,500</td><td>~6 weeks</td></tr>
+          <tr><td>P6</td><td>Custom Plan</td><td>Let's talk</td><td>Scoped</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Brand Colors</h3>
+        <span class="panel-code">5 tokens</span>
+      </div>
+      <div class="swatch-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background:#14181F;"></div>
+          <div class="swatch-label"><span class="name">Ink</span><span class="hex">#14181F</span></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#F2EFE6;"></div>
+          <div class="swatch-label"><span class="name">Paper</span><span class="hex">#F2EFE6</span></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FFC93C;"></div>
+          <div class="swatch-label"><span class="name">Yellow</span><span class="hex">#FFC93C</span></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#FF5A1F;"></div>
+          <div class="swatch-label"><span class="name">Orange</span><span class="hex">#FF5A1F</span></div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background:#8B93A1;"></div>
+          <div class="swatch-label"><span class="name">Steel</span><span class="hex">#8B93A1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>Typography</h3>
+        <span class="panel-code">3 faces</span>
+      </div>
+      <div class="font-list">
+        <div class="font-item">
+          <span class="font-sample" style="font-family:'Oswald', sans-serif; font-weight:700; text-transform:uppercase;">Headlines — Oswald</span>
+          <span class="font-name">Display / H1–H3</span>
+        </div>
+        <div class="font-item">
+          <span class="font-sample" style="font-family:'Inter', sans-serif;">Body copy — Inter</span>
+          <span class="font-name">Paragraphs</span>
+        </div>
+        <div class="font-item">
+          <span class="font-sample" style="font-family:'IBM Plex Mono', monospace; text-transform:uppercase;">Labels — IBM Plex Mono</span>
+          <span class="font-name">Codes / nav / tags</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h3>How Inquiries Reach You</h3>
+      </div>
+      <div class="note-list">
+        <div class="note-item"><span>The contact form has <strong>no backend</strong> — submitting it opens the visitor's own email app with a pre-filled message addressed to <strong>dursigns@abcadmin9.online</strong>.</span></div>
+        <div class="note-item"><span>There is no database or inbox on the site itself — every inquiry lands in that email inbox, not here.</span></div>
+        <div class="note-item"><span>If you want submissions logged automatically instead of relying on email, that needs a form backend (e.g. a form service) or a real server.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PASSCODE = "dursigns2026";
+
+  const gate = document.getElementById('gate');
+  const dash = document.getElementById('dash');
+  const form = document.getElementById('gateForm');
+  const pwInput = document.getElementById('pw');
+  const errorEl = document.getElementById('gateError');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (pwInput.value === PASSCODE) {
+      gate.style.display = 'none';
+      dash.classList.add('visible');
+      errorEl.textContent = '';
+    } else {
+      errorEl.textContent = 'Incorrect passcode.';
+      pwInput.value = '';
+      pwInput.focus();
+    }
+  });
+
+  logoutBtn.addEventListener('click', () => {
+    dash.classList.remove('visible');
+    gate.style.display = 'flex';
+    pwInput.value = '';
+    pwInput.focus();
+  });
+</script>
+
+</body>
+</html>
